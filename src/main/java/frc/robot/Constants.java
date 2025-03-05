@@ -20,9 +20,9 @@ public final class Constants {
     public static final double  DEADBAND           = 0.07;
 
     // Scales for movement and rotation (1 is full speed)
-    public static final double  TRANSLATION_SCALE  = 0.8;
-    public static final double  ROTATION_SCALE     = 0.8;
+    public static final double  TRANSLATION_SCALE  = 0.6;
+    public static final double  ROTATION_SCALE     = 0.6;
   }
 
-  public static final   double  MAX_SPEED = 4.5;
+  public static final   double  MAX_SPEED = 2.5;
 }
