@@ -67,7 +67,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
   }
 
-
+  //left stick controls the translation of the robot
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(), 
                                                                 () -> driverController.getLeftY() * -1,
                                                                 () -> driverController.getLeftX() * -1)
