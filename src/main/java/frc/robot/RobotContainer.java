@@ -15,13 +15,13 @@ import frc.robot.subsystems.ExampleSubsystem;
 
 import com.reduxrobotics.canand.CanandEventLoop;
 
-//import com.pathplanner.lib.auto.AutoBuilder;
-//import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandPS5Controller;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,7 +39,6 @@ public class RobotContainer {
 
   // create a new swerve subsystem object
   private final SwerveSubsystem drivebase = new SwerveSubsystem();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   // create an object for our driver controller
   // private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
@@ -59,9 +58,9 @@ public class RobotContainer {
     // Shut up
     DriverStation.silenceJoystickConnectionWarning(true);
 
-    //autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser();
 
-    //setupAutoChooser();
+    setupAutoChooser();
 
     // set the default command for the drivebase to the drive command
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
@@ -95,24 +94,14 @@ public class RobotContainer {
     driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
   }
 
-  /*
   private void setupAutoChooser(){
     new PathPlannerAuto("Test Auto");
-    new PathPlannerAuto("AL4 HL4");
-    new PathPlannerAuto("JL4 HL4");
 
-
-    Shuffleboard.getTab(OperatorConstants.AUTO_SHUFFLEBOARD).add("Auto", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
-  }
-  */
-
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
   }
 }

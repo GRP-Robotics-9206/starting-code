@@ -12,11 +12,11 @@ import frc.robot.Constants.OperatorConstants;
 import java.io.File;
 import java.util.function.Supplier;
 
-//import com.pathplanner.lib.auto.AutoBuilder;
-//import com.pathplanner.lib.commands.PathfindingCommand;
-//import com.pathplanner.lib.config.PIDConstants;
-//import com.pathplanner.lib.config.RobotConfig;
-//import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -110,7 +110,6 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Setup AutoBuilder for PathPlanner.
    */
-  /*
   public void setupPathPlanner()
   {
     // Load the RobotConfig from the GUI settings. You should probably
@@ -178,6 +177,5 @@ public class SwerveSubsystem extends SubsystemBase {
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
   }
-    */
 
 }
