@@ -17,7 +17,14 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -35,8 +42,19 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  
+  private Trajectory m_trajectory;
 
-  private final Field2d m_field = new Field2d();
+  private Field2d m_field = new Field2d();
+
+  public void robotInit() {
+    // Create and push Field2d to SmartDashboard.
+    m_field = new Field2d();
+    SmartDashboard.putData(m_field);
+
+    // gets layout from elastic
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath());
+  }
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -124,15 +142,19 @@ public class Robot extends TimedRobot {
 
   // function to setup elastic
   private void updateSmartDashboard() {
+    //get swerve from subsystem and calc velocity 
+    var swerve = m_robotContainer.drivebase.getSwerveDrive();
+    var vel = Math.hypot(swerve.getRobotVelocity().vxMetersPerSecond, swerve.getRobotVelocity().vyMetersPerSecond); 
+
     SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
     SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
     SmartDashboard.putNumber("CPU Temperature", RobotController.getCPUTemp());
     SmartDashboard.putBoolean("RSL", RobotController.getRSLState());
-    //SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
-    //SmartDashboard.putNumber("Robot Velocity", m_robotContainer.drivebase.getSwerveDrive().getRobotVelocity());
+    SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
+    SmartDashboard.putNumber("Robot Velocity", vel);
 
-    // Update both Field2d and Swerve widget with the same pose
-    var robotPose = m_robotContainer.drivebase.getSwerveDrive().getPose();
+    // Update Field2d pose
+    var robotPose = swerve.getPose();
     m_field.setRobotPose(robotPose);
   }
 }
