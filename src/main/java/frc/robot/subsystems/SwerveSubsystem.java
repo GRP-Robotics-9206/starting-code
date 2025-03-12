@@ -17,6 +17,7 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.controllers.PPLTVController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -43,9 +44,6 @@ public class SwerveSubsystem extends SubsystemBase {
   // create a swerveDrive object but don't define it yet becasue it coomplains about not handling potential errors
   SwerveDrive swerveDrive;
 
-  private Field2d m_field = new Field2d();
-
-
   public SwerveSubsystem() {
 
     // Set Telemetry Verbosity (might want lower for comps as it can slow things down if it's too high, but for testing we don't care)
@@ -71,17 +69,8 @@ public class SwerveSubsystem extends SubsystemBase {
                                                true,
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
 
-                                               //setupPathPlanner();
-
-                                               //Shuffleboard.getTab(OperatorConstants.AUTO_SHUFFLEBOARD).add(m_field);
+                                               setupPathPlanner();
   }
-
-
-  public void periodic(){
-    m_field.setRobotPose(swerveDrive.getPose());
-    SmartDashboard.putData("Field", m_field);
-  }
-
 
   // command for zeroing the gyro, it needs disabling and re-enabling to start moving again after calling, might want to look into that
   public Command zeroGyro() {
@@ -107,6 +96,9 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   
+  /**
+   * Setup AutoBuilder for PathPlanner.
+   */
   /**
    * Setup AutoBuilder for PathPlanner.
    */
@@ -144,9 +136,9 @@ public class SwerveSubsystem extends SubsystemBase {
           // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
           new PPHolonomicDriveController(
               // PPHolonomicController is the built in path following controller for holonomic drive trains
-              new PIDConstants(3, 0.0, 0.0),
+              new PIDConstants(5.0, 0.0, 0.0),
               // Translation PID constants
-              new PIDConstants(3, 0.0, 0.0)
+              new PIDConstants(5.0, 0.0, 0.0)
               // Rotation PID constants
           ),
           config,

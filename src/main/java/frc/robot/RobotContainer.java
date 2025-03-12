@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
 
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -38,12 +39,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // create a new swerve subsystem object
-  private final SwerveSubsystem drivebase = new SwerveSubsystem();
+  public final SwerveSubsystem drivebase = new SwerveSubsystem();
 
   // create an object for our driver controller
   // private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
 
+  private final SendableChooser<Command> autoChooser;
 
   //private final SendableChooser<Command> autoChooser;
   // Build an auto chooser. This will use Commands.none() as the default option.
@@ -58,12 +60,13 @@ public class RobotContainer {
     // Shut up
     DriverStation.silenceJoystickConnectionWarning(true);
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-
-    setupAutoChooser();
-
     // set the default command for the drivebase to the drive command
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+
+    // Setup pathplaner auto chooser
+    autoChooser = AutoBuilder.buildAutoChooser();
+
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   //left stick controls the translation of the robot
@@ -94,12 +97,9 @@ public class RobotContainer {
     driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
   }
 
-  private void setupAutoChooser(){
-    new PathPlannerAuto("Test Auto");
-
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+  public Command getPathPlannerAuto() {
+    return autoChooser.getSelected();
   }
-
 
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();

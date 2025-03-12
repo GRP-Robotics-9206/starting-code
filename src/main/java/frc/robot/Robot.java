@@ -4,7 +4,25 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.json.simple.parser.ParseException;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -17,6 +35,8 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+
+  private final Field2d m_field = new Field2d();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -42,6 +62,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    updateSmartDashboard();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -49,7 +71,8 @@ public class Robot extends TimedRobot {
   public void disabledInit() {}
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
@@ -98,4 +121,18 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  // function to setup elastic
+  private void updateSmartDashboard() {
+    SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
+    SmartDashboard.putNumber("Voltage", RobotController.getBatteryVoltage());
+    SmartDashboard.putNumber("CPU Temperature", RobotController.getCPUTemp());
+    SmartDashboard.putBoolean("RSL", RobotController.getRSLState());
+    //SmartDashboard.putNumber("Match Time", Timer.getMatchTime());
+    //SmartDashboard.putNumber("Robot Velocity", m_robotContainer.drivebase.getSwerveDrive().getRobotVelocity());
+
+    // Update both Field2d and Swerve widget with the same pose
+    var robotPose = m_robotContainer.drivebase.getSwerveDrive().getPose();
+    m_field.setRobotPose(robotPose);
+  }
 }
