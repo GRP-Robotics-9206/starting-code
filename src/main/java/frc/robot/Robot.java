@@ -12,31 +12,22 @@ import java.util.stream.Collectors;
 
 import org.json.simple.parser.ParseException;
 
-import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.util.Elastic;
-
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -175,46 +166,45 @@ public class Robot extends TimedRobot {
     newAutoName = m_robotContainer.getAutonomousCommand().getName();
     if (autoName != newAutoName | ally != newAlly) {
       newAlly = ally;
-        autoName = newAutoName;
-        if (AutoBuilder.getAllAutoNames().contains(autoName)) {
-            System.out.println("Displaying " + autoName);
-            try {
-                List<PathPlannerPath> pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(autoName);
-                List<Pose2d> poses = new ArrayList<>();
-                for (PathPlannerPath path : pathPlannerPaths) {
-                  if (ally.isPresent()) {
-                    if (ally.get() == Alliance.Red) {
-                      poses.addAll(path.getAllPathPoints().stream()
-                      .map(point -> new Pose2d(Constants.Pose.feildFlip - point.position.getX(),Constants.Pose.feildFlipy - point.position.getY(), new Rotation2d()))
-                    .collect(Collectors.toList()));
-                    //Elastic.selectTab("RED");
-                    }
-                    if (ally.get() == Alliance.Blue) {
-                      poses.addAll(path.getAllPathPoints().stream()
-                      .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                    .collect(Collectors.toList()));
-                    //Elastic.selectTab("BLUE");
-                    }
-                  }
-                  else {
-                      System.out.println("No alliance found");
-                      poses.addAll(path.getAllPathPoints().stream()
-                      .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                    .collect(Collectors.toList()));
-                  }
-                }
-                
-                m_field.getObject("path").setPoses(poses);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                if (e instanceof ParseException) {
-                    e.printStackTrace();
-                } else {
-                  e.printStackTrace();
-                }
+      autoName = newAutoName;
+      if (AutoBuilder.getAllAutoNames().contains(autoName)) {
+        System.out.println("Displaying " + autoName);
+        try {
+          List<PathPlannerPath> pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(autoName);
+          List<Pose2d> poses = new ArrayList<>();
+          for (PathPlannerPath path : pathPlannerPaths) {
+            if (ally.isPresent()) {
+              if (ally.get() == Alliance.Red) {
+                poses.addAll(path.getAllPathPoints().stream()
+                .map(point -> new Pose2d(Constants.Pose.feildFlip - point.position.getX(),Constants.Pose.feildFlipy - point.position.getY(), new Rotation2d()))
+                .collect(Collectors.toList()));
+                //Elastic.selectTab("RED");
+              }
+              if (ally.get() == Alliance.Blue) {
+                poses.addAll(path.getAllPathPoints().stream()
+                .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
+                .collect(Collectors.toList()));
+                //Elastic.selectTab("BLUE");
+              }
             }
+            else {
+              System.out.println("No alliance found");
+              poses.addAll(path.getAllPathPoints().stream()
+              .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
+              .collect(Collectors.toList()));
+            }
+          }  
+          m_field.getObject("path").setPoses(poses);
+        } catch (IOException e) {
+          e.printStackTrace();
+        } catch (Exception e) {
+          if (e instanceof ParseException) {
+            e.printStackTrace();
+          } else {
+            e.printStackTrace();
+          }
         }
+      }
     }
   }
 }
