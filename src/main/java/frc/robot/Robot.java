@@ -97,51 +97,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    ally = DriverStation.getAlliance();
-    newAutoName = m_robotContainer.getAutonomousCommand().getName();
-    if (autoName != newAutoName | ally != newAlly) {
-        newAlly = ally;
-        autoName = newAutoName;
-        if (AutoBuilder.getAllAutoNames().contains(autoName)) {
-            System.out.println("Displaying " + autoName);
-            try {
-                List<PathPlannerPath> pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(autoName);
-                List<Pose2d> poses = new ArrayList<>();
-                for (PathPlannerPath path : pathPlannerPaths) {
-                        if (ally.isPresent()) {
-                          if (ally.get() == Alliance.Red) {
-                            poses.addAll(path.getAllPathPoints().stream()
-                            .map(point -> new Pose2d(Constants.Pose.feildFlip - point.position.getX(),Constants.Pose.feildFlipy - point.position.getY(), new Rotation2d()))
-                          .collect(Collectors.toList()));
-                          //Elastic.selectTab("RED");
-                          }
-                          if (ally.get() == Alliance.Blue) {
-                            poses.addAll(path.getAllPathPoints().stream()
-                            .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                          .collect(Collectors.toList()));
-                          //Elastic.selectTab("BLUE");
-                          }
-                        }
-                        else {
-                            System.out.println("No alliance found");
-                            poses.addAll(path.getAllPathPoints().stream()
-                            .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                          .collect(Collectors.toList()));
-                        }
-                }
-              
-                m_field.getObject("path").setPoses(poses);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                if (e instanceof ParseException) {
-                    e.printStackTrace();
-                } else {
-                  e.printStackTrace();
-                }
-            }
-        }
-    }
+    displayAuto();
   }
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
@@ -158,51 +114,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    ally = DriverStation.getAlliance();
-    newAutoName = m_robotContainer.getAutonomousCommand().getName();
-    if (autoName != newAutoName | ally != newAlly) {
-      newAlly = ally;
-        autoName = newAutoName;
-        if (AutoBuilder.getAllAutoNames().contains(autoName)) {
-            System.out.println("Displaying " + autoName);
-            try {
-                List<PathPlannerPath> pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(autoName);
-                List<Pose2d> poses = new ArrayList<>();
-                for (PathPlannerPath path : pathPlannerPaths) {
-                  if (ally.isPresent()) {
-                    if (ally.get() == Alliance.Red) {
-                      poses.addAll(path.getAllPathPoints().stream()
-                      .map(point -> new Pose2d(Constants.Pose.feildFlip - point.position.getX(),Constants.Pose.feildFlipy - point.position.getY(), new Rotation2d()))
-                    .collect(Collectors.toList()));
-                    //Elastic.selectTab("RED");
-                    }
-                    if (ally.get() == Alliance.Blue) {
-                      poses.addAll(path.getAllPathPoints().stream()
-                      .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                    .collect(Collectors.toList()));
-                    //Elastic.selectTab("BLUE");
-                    }
-                  }
-                  else {
-                      System.out.println("No alliance found");
-                      poses.addAll(path.getAllPathPoints().stream()
-                      .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-                    .collect(Collectors.toList()));
-                  }
-                }
-                
-                m_field.getObject("path").setPoses(poses);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (Exception e) {
-                if (e instanceof ParseException) {
-                    e.printStackTrace();
-                } else {
-                  e.printStackTrace();
-                }
-            }
-        }
-    }
+    displayAuto();
   }
 
   @Override
@@ -254,5 +166,53 @@ public class Robot extends TimedRobot {
     // Update Field2d pose
     var robotPose = swerve.getPose();
     m_field.setRobotPose(robotPose);
+  }
+
+  private void displayAuto() {
+    ally = DriverStation.getAlliance();
+    newAutoName = m_robotContainer.getAutonomousCommand().getName();
+    if (autoName != newAutoName | ally != newAlly) {
+      newAlly = ally;
+        autoName = newAutoName;
+        if (AutoBuilder.getAllAutoNames().contains(autoName)) {
+            System.out.println("Displaying " + autoName);
+            try {
+                List<PathPlannerPath> pathPlannerPaths = PathPlannerAuto.getPathGroupFromAutoFile(autoName);
+                List<Pose2d> poses = new ArrayList<>();
+                for (PathPlannerPath path : pathPlannerPaths) {
+                  if (ally.isPresent()) {
+                    if (ally.get() == Alliance.Red) {
+                      poses.addAll(path.getAllPathPoints().stream()
+                      .map(point -> new Pose2d(Constants.Pose.feildFlip - point.position.getX(),Constants.Pose.feildFlipy - point.position.getY(), new Rotation2d()))
+                    .collect(Collectors.toList()));
+                    //Elastic.selectTab("RED");
+                    }
+                    if (ally.get() == Alliance.Blue) {
+                      poses.addAll(path.getAllPathPoints().stream()
+                      .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
+                    .collect(Collectors.toList()));
+                    //Elastic.selectTab("BLUE");
+                    }
+                  }
+                  else {
+                      System.out.println("No alliance found");
+                      poses.addAll(path.getAllPathPoints().stream()
+                      .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
+                    .collect(Collectors.toList()));
+                  }
+                }
+                
+                m_field.getObject("path").setPoses(poses);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
+                if (e instanceof ParseException) {
+                    e.printStackTrace();
+                } else {
+                  e.printStackTrace();
+                }
+            }
+        }
+    }
   }
 }
