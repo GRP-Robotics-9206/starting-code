@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -26,7 +24,10 @@ public final class Constants {
     public static final double  ROTATION_SCALE     = 0.9;
   }
 
-  public static final   double  MAX_SPEED = 2.5;
+  public static final class Pose {
+    public static final double feildFlip = 17.5;
+    public static final double feildFlipy = 8;
+  }
 
-  public Field2d m_field = new Field2d();
+  public static final   double  MAX_SPEED = 2.5;
 }
