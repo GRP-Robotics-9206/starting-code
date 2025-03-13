@@ -24,7 +24,7 @@ public final class Constants {
     public static final double  ROTATION_SCALE     = 0.9;
   }
 
-  public static final class Pose {
+  public static class Pose {
     public static final double feildFlip = 17.5;
     public static final double feildFlipy = 8;
   }
