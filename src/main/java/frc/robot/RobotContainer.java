@@ -5,9 +5,12 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
+
+import frc.robot.commands.ArmDownCommand;
+import frc.robot.commands.ArmUpCommand;
 
 import com.reduxrobotics.canand.CanandEventLoop;
 
@@ -34,9 +37,13 @@ public class RobotContainer {
   // create a new swerve subsystem object
   public final SwerveSubsystem drivebase = new SwerveSubsystem();
 
+  //other subsystems
+  public final ArmSubsystem m_arm = new ArmSubsystem();
+
   // create an object for our driver controller
   // private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
+  private final CommandXboxController operatorController = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
 
   private final SendableChooser<Command> autoChooser;
 
@@ -88,7 +95,13 @@ public class RobotContainer {
   // define what buttons do on the controller
   private void configureBindings() {
     driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
+
+    operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));
+    operatorController.leftTrigger(.2).whileTrue(new ArmDownCommand(m_arm));
   }
+
+
+
 
   public Command getPathPlannerAuto() {
     return autoChooser.getSelected();
