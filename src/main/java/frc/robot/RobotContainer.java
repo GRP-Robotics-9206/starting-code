@@ -6,11 +6,15 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-
+import frc.robot.commands.AlgieInCommand;
+import frc.robot.commands.AlgieOutCommand;
 import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
+import frc.robot.commands.CoralOutCommand;
+import frc.robot.commands.CoralStackCommand;
 
 import com.reduxrobotics.canand.CanandEventLoop;
 
@@ -39,6 +43,7 @@ public class RobotContainer {
 
   //other subsystems
   public final ArmSubsystem m_arm = new ArmSubsystem();
+  public final RollerSubsystem m_roller = new RollerSubsystem();
 
   // create an object for our driver controller
   // private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
@@ -94,10 +99,20 @@ public class RobotContainer {
 
   // define what buttons do on the controller
   private void configureBindings() {
+    // swerve drive zero gyro
     driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
 
+    // algie arm controls
     operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));
     operatorController.leftTrigger(.2).whileTrue(new ArmDownCommand(m_arm));
+
+    // algie in/out controls
+    operatorController.rightBumper().whileTrue(new AlgieInCommand(m_roller));
+    operatorController.rightTrigger(.2).whileTrue(new AlgieOutCommand(m_roller));
+
+    // coral cotrols
+    operatorController.x().whileTrue(new CoralOutCommand(m_roller));
+    operatorController.y().whileTrue(new CoralStackCommand(m_roller));
   }
 
 

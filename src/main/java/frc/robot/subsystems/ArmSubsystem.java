@@ -11,14 +11,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
-
-    private final SparkMax armMotor;
+  private final SparkMax armMotor;
     
-    /**
-     * This subsytem that controls the arm.
-     */
-    public ArmSubsystem () {
-
+  /**
+   * This subsytem that controls the arm.
+   */
+  public ArmSubsystem () {
     // Set up the arm motor as a brushed motor
     armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushed);
 
@@ -36,18 +34,18 @@ public class ArmSubsystem extends SubsystemBase {
     armConfig.smartCurrentLimit(ArmConstants.ARM_MOTOR_CURRENT_LIMIT);
     armConfig.idleMode(IdleMode.kBrake);
     armMotor.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    }
+  }
 
-    @Override
-    public void periodic() {
-    }
-    /** 
-     * This is a method that makes the arm move at your desired speed
-     *  Positive values make it spin forward and negative values spin it in reverse
-     * 
-     * @param speed motor speed from -1.0 to 1, with 0 stopping it
-     */
-    public void runArm(double speed){
-      armMotor.set(speed);
-    }
+  @Override
+  public void periodic() {
+  }
+  /** 
+   * This is a method that makes the arm move at your desired speed
+   *  Positive values make it spin forward and negative values spin it in reverse
+   * 
+   * @param speed motor speed from -1.0 to 1, with 0 stopping it
+   */
+  public void runArm(double speed){
+    armMotor.set(speed);
+  }
 }
