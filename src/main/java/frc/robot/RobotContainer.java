@@ -19,6 +19,7 @@ import frc.robot.commands.CoralStackCommand;
 import com.reduxrobotics.canand.CanandEventLoop;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -41,16 +42,17 @@ public class RobotContainer {
   // create a new swerve subsystem object
   public final SwerveSubsystem drivebase = new SwerveSubsystem();
 
-  //other subsystems
+  // other subsystems
   public final ArmSubsystem m_arm = new ArmSubsystem();
   public final RollerSubsystem m_roller = new RollerSubsystem();
+
+  // auto chooser
+  private final SendableChooser<Command> autoChooser; 
 
   // create an object for our driver controller
   // private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
   private final CommandXboxController operatorController = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
-
-  private final SendableChooser<Command> autoChooser;
 
   //private final SendableChooser<Command> autoChooser;
   // Build an auto chooser. This will use Commands.none() as the default option.
@@ -67,6 +69,9 @@ public class RobotContainer {
 
     // set the default command for the drivebase to the drive command
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
+
+    // named commands for pathplanner
+    NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller));
 
     // Setup pathplaner auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
