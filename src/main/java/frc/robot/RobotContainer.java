@@ -71,7 +71,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // named commands for pathplanner
-    NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller));
+    NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller).withTimeout(1));
 
     // Setup pathplaner auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
