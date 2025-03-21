@@ -109,11 +109,11 @@ public class RobotContainer {
 
     // algie arm controls
     operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));
-    operatorController.leftTrigger(.2).whileTrue(new ArmDownCommand(m_arm));
+    operatorController.leftTrigger(.6).whileTrue(new ArmDownCommand(m_arm));
 
     // algie in/out controls
     operatorController.rightBumper().whileTrue(new AlgieInCommand(m_roller));
-    operatorController.rightTrigger(.2).whileTrue(new AlgieOutCommand(m_roller));
+    operatorController.rightTrigger(.6).whileTrue(new AlgieOutCommand(m_roller));
 
     // coral cotrols
     operatorController.x().whileTrue(new CoralOutCommand(m_roller));
