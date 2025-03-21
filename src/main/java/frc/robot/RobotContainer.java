@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
@@ -72,6 +73,7 @@ public class RobotContainer {
 
     // named commands for pathplanner
     NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller).withTimeout(1));
+    NamedCommands.registerCommand( "CoralStack", new CoralStackCommand(m_roller).withTimeout(1) );
 
     // Setup pathplaner auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -105,7 +107,8 @@ public class RobotContainer {
   // define what buttons do on the controller
   private void configureBindings() {
     // swerve drive zero gyro
-    driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
+    //driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
+    driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
     // algie arm controls
     operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));

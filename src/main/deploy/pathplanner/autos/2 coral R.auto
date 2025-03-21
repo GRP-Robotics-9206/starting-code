@@ -7,37 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2pc coral 1 R"
+            "pathName": "2 coral r 1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CoralOut"
+            "name": "CoralStack"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "2pc to coral"
+            "pathName": "2 coral to r"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 3.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "2pc coral 2"
+            "pathName": "2 coral r 2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CoralOut"
+            "name": "CoralStack"
           }
         }
       ]
