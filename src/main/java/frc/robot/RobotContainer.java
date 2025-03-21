@@ -81,8 +81,8 @@ public class RobotContainer {
 
   //left stick controls the translation of the robot
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(), 
-                                                                () -> driverController.getLeftY() * -1,
-                                                                () -> driverController.getLeftX() * -1)
+                                                                () -> driverController.getLeftY() * 1,
+                                                                () -> driverController.getLeftX() * 1)
                                                                 .withControllerRotationAxis(driverController::getRightX)
                                                                 .deadband(OperatorConstants.DEADBAND)
                                                                 .scaleTranslation(OperatorConstants.TRANSLATION_SCALE)
