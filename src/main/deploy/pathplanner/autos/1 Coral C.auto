@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "center coral 1"
+            "pathName": "coral 1 c"
           }
         },
         {
@@ -20,6 +20,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": " 1 Coral",
   "choreoAuto": false
 }

@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Get out of way"
+            "pathName": "coral 1 r"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralStack"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": " 1 Coral",
   "choreoAuto": false
 }
