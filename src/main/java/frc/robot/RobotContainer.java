@@ -81,7 +81,7 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
-  //left stick controls the translation of the robot
+  // left stick controls the translation of the robot
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(), 
                                                                 () -> driverController.getLeftY() * -1,
                                                                 () -> driverController.getLeftX() * -1)
@@ -107,7 +107,7 @@ public class RobotContainer {
   // define what buttons do on the controller
   private void configureBindings() {
     // swerve drive zero gyro
-    //driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
+    // driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
     driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
     // algie arm controls
@@ -118,7 +118,7 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(new AlgieInCommand(m_roller));
     operatorController.rightTrigger(.6).whileTrue(new AlgieOutCommand(m_roller));
 
-    //auto algie
+    // auto algie
     operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgieInCommand(m_roller)));
     operatorController.a().whileFalse(new ArmUpCommand(m_arm).until(m_arm::isArmUp));
     operatorController.b().whileTrue(new AlgieOutCommand(m_roller).withTimeout(1));

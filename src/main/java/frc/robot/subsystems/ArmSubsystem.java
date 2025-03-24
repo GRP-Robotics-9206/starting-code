@@ -19,16 +19,18 @@ public class ArmSubsystem extends SubsystemBase {
    * This subsytem that controls the arm.
    */
   public ArmSubsystem () {
-    // Set up the arm motor as a brushed motor
+    // Set up the arm motor as a brushless motor
     armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushless);
+
+    // Gets the Encoder object from the motor
     encoder = armMotor.getEncoder();
-    
+
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
     armMotor.setCANTimeout(250);
 
-    //zero encoder
+    // zero encoder
     encoder.setPosition(0);
 
     // Create and apply configuration for arm motor. Voltage compensation helps
@@ -45,6 +47,7 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   }
+  
   /** 
    * This is a method that makes the arm move at your desired speed
    *  Positive values make it spin forward and negative values spin it in reverse
