@@ -42,7 +42,6 @@ public class ArmDownCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
-    m_arm.setArmState(true);
   }
 
   // Returns true when the command should end.

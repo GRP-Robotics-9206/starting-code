@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -12,15 +13,15 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   private final SparkMax armMotor;
-  private boolean armState = false;
-    
+  private final RelativeEncoder encoder;
+
   /**
    * This subsytem that controls the arm.
    */
   public ArmSubsystem () {
     // Set up the arm motor as a brushed motor
     armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushless);
-
+    encoder = armMotor.getEncoder();
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
@@ -50,11 +51,16 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.set(speed);
   }
 
-  public void setArmState(boolean state){
-    armState = state;
+  public double getEncoderPos(){
+    return encoder.getPosition();
   }
 
-  public boolean ArmState(){
-    return armState;
+  public boolean isArmUp(){
+    return getEncoderPos() > ArmConstants.ARM_UP_OFFSET;
   }
+
+  public boolean isArmDown(){
+    return getEncoderPos() < ArmConstants.ARM_DOWN_OFFSET;
+  }
+
 }

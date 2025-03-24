@@ -148,6 +148,7 @@ public class Robot extends TimedRobot {
   private void updateSmartDashboard() {
     //get swerve from subsystem and calc velocity 
     var swerve = m_robotContainer.drivebase.getSwerveDrive();
+    var armpos = m_robotContainer.m_arm.getEncoderPos();
     var vel = Math.hypot(swerve.getRobotVelocity().vxMetersPerSecond, swerve.getRobotVelocity().vyMetersPerSecond); 
 
     SmartDashboard.putNumber("CAN Utilization %", RobotController.getCANStatus().percentBusUtilization * 100.0);
@@ -156,6 +157,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("RSL", RobotController.getRSLState());
     SmartDashboard.putNumber("Match Time", DriverStation.getMatchTime());
     SmartDashboard.putNumber("Robot Velocity", vel);
+    SmartDashboard.putNumber("Arm Position", armpos);
 
     // Update Field2d pose
     var robotPose = swerve.getPose();
