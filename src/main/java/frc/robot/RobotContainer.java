@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
@@ -13,6 +14,8 @@ import frc.robot.commands.AlgieInCommand;
 import frc.robot.commands.AlgieOutCommand;
 import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
+import frc.robot.commands.AutoArmDownCommand;
+import frc.robot.commands.AutoArmUpCommand;
 import frc.robot.commands.CoralOutCommand;
 import frc.robot.commands.CoralStackCommand;
 
@@ -117,6 +120,10 @@ public class RobotContainer {
     // algie in/out controls
     operatorController.rightBumper().whileTrue(new AlgieInCommand(m_roller));
     operatorController.rightTrigger(.6).whileTrue(new AlgieOutCommand(m_roller));
+
+    //auto algie
+    operatorController.a().whileTrue(new AutoArmDownCommand(m_arm).withTimeout(ArmConstants.ARM_AUTO_DOWN_TIME).andThen(new AlgieInCommand(m_roller)));
+    operatorController.a().whileFalse(new AutoArmUpCommand(m_arm).withTimeout(ArmConstants.ARM_AUTO_UP_TIME));
 
     // coral cotrols
     operatorController.x().whileTrue(new CoralOutCommand(m_roller));

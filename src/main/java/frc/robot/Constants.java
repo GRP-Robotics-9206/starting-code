@@ -40,6 +40,8 @@ public final class Constants {
     public static final double ARM_SPEED_UP = -0.3;
     public static final double ARM_HOLD_DOWN = 0.01;
     public static final double ARM_HOLD_UP = -0.05;
+    public static final double ARM_AUTO_UP_TIME = 2;
+    public static final double ARM_AUTO_DOWN_TIME = 2;
   }
 
   public static final class RollerConstants {

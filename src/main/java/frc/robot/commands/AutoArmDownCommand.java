@@ -9,8 +9,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An ArmDown command that uses an Arm subsystem. */
-public class ArmDownCommand extends Command {
+public class AutoArmDownCommand extends Command {
   private final ArmSubsystem m_arm;
+  private boolean armState = true;
 
   /**
    * Powers the arm down, when finished passively holds the arm down.
@@ -20,7 +21,7 @@ public class ArmDownCommand extends Command {
    *
    * @param arm The subsystem used by this command.
    */
-  public ArmDownCommand(ArmSubsystem arm) {
+  public AutoArmDownCommand(ArmSubsystem arm) {
     m_arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
@@ -28,12 +29,14 @@ public class ArmDownCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    armState = m_arm.ArmState();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.runArm(ArmConstants.ARM_SPEED_DOWN);
+    if(!armState) m_arm.runArm(ArmConstants.ARM_SPEED_DOWN);
   }
 
   // Called once the command ends or is interrupted.
@@ -41,7 +44,6 @@ public class ArmDownCommand extends Command {
   // When the next command is caled it will override this command
   @Override
   public void end(boolean interrupted) {
-    m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
     m_arm.setArmState(true);
   }
 

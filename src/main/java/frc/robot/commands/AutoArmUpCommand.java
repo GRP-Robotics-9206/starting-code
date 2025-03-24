@@ -8,41 +8,42 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
-/** An ArmDown command that uses an Arm subsystem. */
-public class ArmDownCommand extends Command {
+/** An ArmUpCommand that uses an Arm subsystem. */
+public class AutoArmUpCommand extends Command {
   private final ArmSubsystem m_arm;
+  private boolean armState = false;
 
   /**
-   * Powers the arm down, when finished passively holds the arm down.
+   * Powers the arm up, when finished passively holds the arm up.
    * 
-   * We recommend that you use this to only move the arm into the paracord
-   * and let the passive portion hold the arm down.
+   * We recommend that you use this to only move the arm into the hardstop
+   * and let the passive portion hold the arm up.
    *
    * @param arm The subsystem used by this command.
    */
-  public ArmDownCommand(ArmSubsystem arm) {
+  public AutoArmUpCommand(ArmSubsystem arm) {
     m_arm = arm;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    armState = m_arm.ArmState();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.runArm(ArmConstants.ARM_SPEED_DOWN);
+    if(armState) m_arm.runArm(ArmConstants.ARM_SPEED_UP);
   }
 
   // Called once the command ends or is interrupted.
-  // Here we run arm down at low speed to ensure it stays down
-  // When the next command is caled it will override this command
+  // Here we run a command that will hold the arm up after to ensure the arm does
+  // not drop due to gravity.
   @Override
   public void end(boolean interrupted) {
-    m_arm.runArm(ArmConstants.ARM_HOLD_DOWN);
-    m_arm.setArmState(true);
+    m_arm.setArmState(false);
   }
 
   // Returns true when the command should end.

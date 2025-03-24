@@ -12,6 +12,7 @@ import frc.robot.Constants.ArmConstants;
 
 public class ArmSubsystem extends SubsystemBase {
   private final SparkMax armMotor;
+  private boolean armState = false;
     
   /**
    * This subsytem that controls the arm.
@@ -47,5 +48,13 @@ public class ArmSubsystem extends SubsystemBase {
    */
   public void runArm(double speed){
     armMotor.set(speed);
+  }
+
+  public void setArmState(boolean state){
+    armState = state;
+  }
+
+  public boolean ArmState(){
+    return armState;
   }
 }
