@@ -127,9 +127,6 @@ public class RobotContainer {
     operatorController.y().whileTrue(new CoralStackCommand(m_roller));
   }
 
-
-
-
   public Command getPathPlannerAuto() {
     return autoChooser.getSelected();
   }
