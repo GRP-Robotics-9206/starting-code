@@ -22,10 +22,14 @@ public class ArmSubsystem extends SubsystemBase {
     // Set up the arm motor as a brushed motor
     armMotor = new SparkMax(ArmConstants.ARM_MOTOR_ID, MotorType.kBrushless);
     encoder = armMotor.getEncoder();
+    
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
     armMotor.setCANTimeout(250);
+
+    //zero encoder
+    encoder.setPosition(0);
 
     // Create and apply configuration for arm motor. Voltage compensation helps
     // the arm behave the same as the battery
