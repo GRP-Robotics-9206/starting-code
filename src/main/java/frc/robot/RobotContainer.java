@@ -121,6 +121,7 @@ public class RobotContainer {
     //auto algie
     operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgieInCommand(m_roller)));
     operatorController.a().whileFalse(new ArmUpCommand(m_arm).until(m_arm::isArmUp));
+    operatorController.b().whileTrue(new AlgieOutCommand(m_roller).withTimeout(1));
 
     // coral cotrols
     operatorController.x().whileTrue(new CoralOutCommand(m_roller));
