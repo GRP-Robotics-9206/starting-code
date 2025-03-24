@@ -3,23 +3,28 @@
   "robotLength": 0.8636,
   "holonomicMode": true,
   "pathFolders": [
-    "3 pice auto",
-    "2 pice auto"
+    "Center",
+    "Left",
+    "Test",
+    "Right"
   ],
   "autoFolders": [
-    "2 Coral Autos"
+    " 1 Coral",
+    "2 Coral",
+    "3 Coral",
+    "Test"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 68.0,
+  "robotMass": 40.0,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.546,
   "driveWheelRadius": 0.101,
   "driveGearing": 6.75,
-  "maxDriveSpeed": 5.4,
+  "maxDriveSpeed": 5.5,
   "driveMotorType": "NEO",
   "driveCurrentLimit": 60.0,
   "wheelCOF": 1.2,

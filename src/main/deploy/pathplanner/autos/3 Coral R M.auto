@@ -7,43 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2pc coral 1 C"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "CoralOut"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "2pc to coral"
+            "pathName": "source coral combo 1 r"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 2.0
+            "waitTime": 1.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "2pc coral 2"
+            "pathName": "source coral combo 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "coral 3 r"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CoralOut"
+            "name": "CoralStack"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "2 Coral Autos",
+  "folder": "Test",
   "choreoAuto": false
 }
