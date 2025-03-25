@@ -47,5 +47,4 @@ public class RollerSubsystem extends SubsystemBase {
   public void runRoller(double speed){
     rollerMotor.set(speed);
   }
-
 }
