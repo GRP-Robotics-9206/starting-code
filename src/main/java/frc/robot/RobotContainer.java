@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
@@ -120,7 +121,7 @@ public class RobotContainer {
 
     // auto algie
     operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgieInCommand(m_roller)));
-    operatorController.a().whileFalse(new ArmUpCommand(m_arm).until(m_arm::isArmUp));
+    operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgieInCommand(m_roller)).until(m_arm::isArmUp));
     operatorController.b().whileTrue(new AlgieOutCommand(m_roller).withTimeout(1));
 
     // coral cotrols

@@ -50,6 +50,7 @@ public final class Constants {
     public static final double ROLLER_MOTOR_VOLTAGE_COMP = 10;
     public static final double ROLLER_ALGAE_IN = -0.2;
     public static final double ROLLER_ALGAE_OUT = 0.2;
+    public static final double ROLLER_ALGAE_UP = -0.1;
     public static final double ROLLER_CORAL_OUT = -.17;
     public static final double ROLLER_CORAL_STACK = -0.22;
   }
