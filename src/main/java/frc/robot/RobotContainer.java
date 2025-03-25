@@ -124,6 +124,8 @@ public class RobotContainer {
     operatorController.b().whileTrue(new AlgieOutCommand(m_roller).withTimeout(1));
 
     // coral cotrols
+    // If the secondary controller has x pressed the coral will be ejected with a slow rotation
+    // If the secondary controller has y pressed the coral will be ejected with a fast rotation
     operatorController.x().whileTrue(new CoralOutCommand(m_roller));
     operatorController.y().whileTrue(new CoralStackCommand(m_roller));
   }
