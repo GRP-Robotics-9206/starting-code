@@ -74,7 +74,7 @@ public class RobotContainer {
 
     // named commands for pathplanner
     NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller).withTimeout(1));
-    NamedCommands.registerCommand( "CoralStack", new CoralStackCommand(m_roller).withTimeout(1) );
+    NamedCommands.registerCommand("CoralStack", new CoralStackCommand(m_roller).withTimeout(1) );
 
     // Setup pathplaner auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
