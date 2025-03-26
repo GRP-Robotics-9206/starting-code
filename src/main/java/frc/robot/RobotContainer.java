@@ -70,7 +70,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // named commands for pathplanner
-    NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller).withTimeout(1));
+    NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller).withTimeout(0.4));
     NamedCommands.registerCommand("CoralStack", new CoralStackCommand(m_roller).withTimeout(1) );
 
     // Setup pathplaner auto chooser
@@ -119,10 +119,10 @@ public class RobotContainer {
     // auto algie
     operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgaeInCommand(m_roller)));
     operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgaeInCommand(m_roller)).until(m_arm::isArmUp));
-    operatorController.b().whileTrue(new AlgaeOutCommand(m_roller).withTimeout(1));
+    operatorController.b().onTrue(new AlgaeOutCommand(m_roller).withTimeout(0.3).andThen(new ArmUpCommand(m_arm).until(m_arm::isArmUp)));
 
     // zero the arm encoder
-    operatorController.start().onTrue((Commands.runOnce(m_arm::zeroEncoder)));
+    driverController.x().onTrue((Commands.runOnce(m_arm::zeroEncoder)));
 
     // coral cotrols
     // If the secondary controller has x pressed the coral will be ejected with a slow rotation
