@@ -111,6 +111,9 @@ public class RobotContainer {
     // driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
     driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
+  // Optional Gryo Reset
+    operatorController.select().onTrue((Commands.runOnce(drivebase::zeroGryo)));
+    
     // algie arm controls
     operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));
     operatorController.leftTrigger(.6).whileTrue(new ArmDownCommand(m_arm));
