@@ -1,0 +1,73 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "coral 1 r"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralStack"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "source 1 r"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "coral 2 r"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralStack"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "source 2 r"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "coral 3 r"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralStack"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "3 Coral",
+  "choreoAuto": false
+}

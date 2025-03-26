@@ -7,16 +7,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.OperatorConstants;
 
 import java.io.File;
 import java.util.function.Supplier;
 
-//import com.pathplanner.lib.auto.AutoBuilder;
-//import com.pathplanner.lib.commands.PathfindingCommand;
-//import com.pathplanner.lib.config.PIDConstants;
-//import com.pathplanner.lib.config.RobotConfig;
-//import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathfindingCommand;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -27,9 +26,6 @@ import static edu.wpi.first.units.Units.Meter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import swervelib.parser.SwerveParser;
 import swervelib.SwerveDrive;
 import swervelib.telemetry.SwerveDriveTelemetry;
@@ -42,9 +38,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   // create a swerveDrive object but don't define it yet becasue it coomplains about not handling potential errors
   SwerveDrive swerveDrive;
-
-  private Field2d m_field = new Field2d();
-
 
   public SwerveSubsystem() {
 
@@ -71,17 +64,8 @@ public class SwerveSubsystem extends SubsystemBase {
                                                true,
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
 
-                                               //setupPathPlanner();
-
-                                               //Shuffleboard.getTab(OperatorConstants.AUTO_SHUFFLEBOARD).add(m_field);
+                                               setupPathPlanner();
   }
-
-
-  public void periodic(){
-    m_field.setRobotPose(swerveDrive.getPose());
-    SmartDashboard.putData("Field", m_field);
-  }
-
 
   // command for zeroing the gyro, it needs disabling and re-enabling to start moving again after calling, might want to look into that
   public Command zeroGyro() {
@@ -110,7 +94,9 @@ public class SwerveSubsystem extends SubsystemBase {
   /**
    * Setup AutoBuilder for PathPlanner.
    */
-  /*
+  /**
+   * Setup AutoBuilder for PathPlanner.
+   */
   public void setupPathPlanner()
   {
     // Load the RobotConfig from the GUI settings. You should probably
@@ -145,9 +131,9 @@ public class SwerveSubsystem extends SubsystemBase {
           // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
           new PPHolonomicDriveController(
               // PPHolonomicController is the built in path following controller for holonomic drive trains
-              new PIDConstants(3, 0.0, 0.0),
+              new PIDConstants(5.0, 0.0, 0.0),
               // Translation PID constants
-              new PIDConstants(3, 0.0, 0.0)
+              new PIDConstants(5.0, 0.0, 0.0)
               // Rotation PID constants
           ),
           config,
@@ -178,6 +164,4 @@ public class SwerveSubsystem extends SubsystemBase {
     // IF USING CUSTOM PATHFINDER ADD BEFORE THIS LINE
     PathfindingCommand.warmupCommand().schedule();
   }
-    */
-
 }
