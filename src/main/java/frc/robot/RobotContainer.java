@@ -110,7 +110,6 @@ public class RobotContainer {
     // swerve drive zero gyro
     // driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
     driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-    driverController.x().onTrue((Commands.runOnce(m_arm::zeroEncoder)));
 
     // algie arm controls
     operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));
@@ -124,6 +123,9 @@ public class RobotContainer {
     operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgaeInCommand(m_roller)));
     operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgaeInCommand(m_roller)).until(m_arm::isArmUp));
     operatorController.b().whileTrue(new AlgaeOutCommand(m_roller).withTimeout(1));
+
+    // zero the arm encoder
+    operatorController.start().onTrue((Commands.runOnce(m_arm::zeroEncoder)));
 
     // coral cotrols
     // If the secondary controller has x pressed the coral will be ejected with a slow rotation
