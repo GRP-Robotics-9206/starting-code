@@ -30,8 +30,27 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
-
-
+/**   You are a BIG SHOT!
+                 ⬛️⬛️⬛️⬛️. ⬛️
+               ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+             ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+           ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+           ⬛️⬜️⬜️⬜️⬜️⬜️⬜️⬛️⬛️
+           ⬛️⬛️⬛️⬜️⬛️⬛️⬛️⬜️⬛️
+         ⬛️🟥🟥🟥⬛️🟨🟨🟨⬛️⬛️
+         ⬛️🟥🟥🟥⬛️🟨🟨🟨⬛️⬛️
+         ⬛️🟥🟥🟥⬛️🟨🟨🟨⬛️⬛️
+           ⬛️⬛️⬛️⬜️⬛️⬛️⬛️⬜️⬛️
+           🟥⬛️⬛️⬜️⬜️⬜️🟥🟥⬛️
+         ⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬛️⬛️⬛️
+           ⬜️⬜️⬜️⬜️⬜️⬛️⬜️⬜️⬜️
+               ⬛️⬛️⬛️⬛️⬜️⬜️⬜️ 
+               ⬛️⬜️⬜️⬛️⬜️⬜️⬛️
+               ⬛️⬛️⬛️⬛️⬜️⬛️⬛️
+               ⬛️⬜️⬜️⬛️⬜️⬛️⬛️
+               ⬛️⬛️⬛️⬛️⬜️⬛️
+               ⬜️⬜️⬜️⬜️⬜️⬛️
+**/
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -111,6 +130,9 @@ public class RobotContainer {
     // driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
     driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
+  // Optional Gryo Reset
+    operatorController.select().onTrue((Commands.runOnce(drivebase::zeroGryo)));
+    
     // algie arm controls
     operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));
     operatorController.leftTrigger(.6).whileTrue(new ArmDownCommand(m_arm));
