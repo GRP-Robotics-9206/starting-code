@@ -9,8 +9,8 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.robot.commands.AlgieInCommand;
-import frc.robot.commands.AlgieOutCommand;
+import frc.robot.commands.AlgaeInCommand;
+import frc.robot.commands.AlgaeOutCommand;
 import frc.robot.commands.ArmDownCommand;
 import frc.robot.commands.ArmUpCommand;
 import frc.robot.commands.CoralOutCommand;
@@ -116,13 +116,13 @@ public class RobotContainer {
     operatorController.leftTrigger(.6).whileTrue(new ArmDownCommand(m_arm));
 
     // algie in/out controls
-    operatorController.rightBumper().whileTrue(new AlgieInCommand(m_roller));
-    operatorController.rightTrigger(.6).whileTrue(new AlgieOutCommand(m_roller));
+    operatorController.rightBumper().whileTrue(new AlgaeInCommand(m_roller));
+    operatorController.rightTrigger(.6).whileTrue(new AlgaeOutCommand(m_roller));
 
     // auto algie
-    operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgieInCommand(m_roller)));
-    operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgieInCommand(m_roller)).until(m_arm::isArmUp));
-    operatorController.b().whileTrue(new AlgieOutCommand(m_roller).withTimeout(1));
+    operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgaeInCommand(m_roller)));
+    operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgaeInCommand(m_roller)).until(m_arm::isArmUp));
+    operatorController.b().whileTrue(new AlgaeOutCommand(m_roller).withTimeout(1));
 
     // coral cotrols
     // If the secondary controller has x pressed the coral will be ejected with a slow rotation

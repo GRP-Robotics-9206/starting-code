@@ -9,7 +9,7 @@ import frc.robot.subsystems.RollerSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** A command to remove (score or pass) Algae. */
-public class AlgieOutCommand extends Command {
+public class AlgaeOutCommand extends Command {
   private final RollerSubsystem m_roller;
 
   /**
@@ -18,7 +18,7 @@ public class AlgieOutCommand extends Command {
    *
    * @param roller The subsystem used by this command.
    */
-  public AlgieOutCommand(RollerSubsystem roller) {
+  public AlgaeOutCommand(RollerSubsystem roller) {
     m_roller = roller;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(roller);
