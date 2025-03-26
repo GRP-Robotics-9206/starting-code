@@ -110,6 +110,7 @@ public class RobotContainer {
     // swerve drive zero gyro
     // driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
     driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+    driverController.x().onTrue((Commands.runOnce(m_arm::zeroEncoder)));
 
     // algie arm controls
     operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));

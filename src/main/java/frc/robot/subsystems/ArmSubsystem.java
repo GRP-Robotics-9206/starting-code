@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
@@ -54,12 +55,19 @@ public class ArmSubsystem extends SubsystemBase {
    * 
    * @param speed motor speed from -1.0 to 1, with 0 stopping it
    */
+
   public void runArm(double speed){
     armMotor.set(speed);
   }
 
   public double getEncoderPos(){
     return encoder.getPosition();
+  }
+
+  public Command zeroEncoder(){
+    return run( () -> {
+      encoder.setPosition(0);
+    });
   }
 
   public boolean isArmUp(){
