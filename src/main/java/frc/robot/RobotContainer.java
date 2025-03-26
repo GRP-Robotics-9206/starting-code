@@ -30,7 +30,26 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
-
+//   You are a BIG SHOT!
+                 ⬛️⬛️⬛️⬛️. ⬛️
+               ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+             ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+           ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+           ⬛️⬜️⬜️⬜️⬜️⬜️⬜️⬛️⬛️
+           ⬛️⬛️⬛️⬜️⬛️⬛️⬛️⬜️⬛️
+         ⬛️🟥🟥🟥⬛️🟨🟨🟨⬛️⬛️
+         ⬛️🟥🟥🟥⬛️🟨🟨🟨⬛️⬛️
+         ⬛️🟥🟥🟥⬛️🟨🟨🟨⬛️⬛️
+           ⬛️⬛️⬛️⬜️⬛️⬛️⬛️⬜️⬛️
+           🟥⬛️⬛️⬜️⬜️⬜️🟥🟥⬛️
+         ⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬛️⬛️⬛️
+           ⬜️⬜️⬜️⬜️⬜️⬛️⬜️⬜️⬜️
+               ⬛️⬛️⬛️⬛️⬜️⬜️⬜️ 
+               ⬛️⬜️⬜️⬛️⬜️⬜️⬛️
+               ⬛️⬛️⬛️⬛️⬜️⬛️⬛️
+               ⬛️⬜️⬜️⬛️⬜️⬛️⬛️
+               ⬛️⬛️⬛️⬛️⬜️⬛️
+               ⬜️⬜️⬜️⬜️⬜️⬛️
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
