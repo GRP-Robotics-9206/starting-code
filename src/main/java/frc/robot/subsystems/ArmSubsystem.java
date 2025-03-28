@@ -74,6 +74,10 @@ public class ArmSubsystem extends SubsystemBase {
     return getEncoderPos() > ArmConstants.ARM_UP_OFFSET;
   }
 
+  public boolean isArmAtBall(){
+    return getEncoderPos() > ArmConstants.ARM_BALL_OFFSET;
+  }
+
   public boolean isArmDown(){
     return getEncoderPos() < ArmConstants.ARM_DOWN_OFFSET;
   }

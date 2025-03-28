@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.RollerSubsystem;
@@ -117,8 +118,8 @@ public class RobotContainer {
     operatorController.rightTrigger(.6).whileTrue(new AlgaeOutCommand(m_roller));
 
     // auto algie
-    operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmDown).andThen(new AlgaeInCommand(m_roller)));
-    operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgaeInCommand(m_roller)).until(m_arm::isArmUp));
+    operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmUp).andThen(new AlgaeInCommand(m_roller)));
+    operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgaeInCommand(m_roller)).until(m_arm::isArmAtBall));
     operatorController.b().onTrue(new AlgaeOutCommand(m_roller).withTimeout(0.3).andThen(new ArmUpCommand(m_arm).until(m_arm::isArmUp)));
 
     // zero the arm encoder

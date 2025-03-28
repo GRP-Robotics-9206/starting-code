@@ -40,7 +40,8 @@ public final class Constants {
     public static final double ARM_SPEED_UP = 0.2;
     public static final double ARM_HOLD_DOWN = -0.01;
     public static final double ARM_HOLD_UP = 0.01;
-    public static final double ARM_UP_OFFSET = -1;
+    public static final double ARM_UP_OFFSET = 0;
+    public static final double ARM_BALL_OFFSET = -1;
     public static final double ARM_DOWN_OFFSET = -17;
   }
 
