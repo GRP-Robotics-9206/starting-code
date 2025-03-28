@@ -32,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor.setCANTimeout(250);
 
     // zero encoder
-    encoder.setPosition(-2);
+    encoder.setPosition(0);
 
     // Create and apply configuration for arm motor. Voltage compensation helps
     // the arm behave the same as the battery
