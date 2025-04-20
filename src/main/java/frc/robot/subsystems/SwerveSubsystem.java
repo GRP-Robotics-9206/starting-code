@@ -12,10 +12,8 @@ import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
@@ -39,7 +37,6 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -59,14 +56,9 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 
 public class SwerveSubsystem extends SubsystemBase
 {
-
-  /**
-   * Swerve drive object.
-   */
   private final SwerveDrive swerveDrive;
-  /**
-   * Enable vision odometry updates while driving.
-   */
+
+  // Enable vision odometry updates while driving.
   private final boolean     visionDriveTest = true;
   /**
    * PhotonVision class to keep an accurate odometry.
@@ -290,28 +282,10 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
     //load path from name
     PathPlannerPath path;
-    try{
-      path = PathPlannerPath.fromPathFile(pathName);
-    }
-    catch (ParseException e)
-    {
-      DriverStation.reportError("Path not found: " + e.getMessage(), false);
-      return Commands.none();
-    }
-    catch (FileVersionException e)
-    {
-      DriverStation.reportError("Path version mismatch: " + e.getMessage(), false);
-      return Commands.none();
-    }
-    catch (IOException e)
-    {
-      DriverStation.reportError("Path not found: " + e.getMessage(), false);
-      return Commands.none();
-    }
+    try {path = PathPlannerPath.fromPathFile(pathName);}
+    catch (ParseException | FileVersionException | IOException e) { e.printStackTrace(); return Commands.none();}
     // Since AutoBuilder is configured, we can use it to build pathfollowing commands
-    return AutoBuilder.pathfindThenFollowPath(
-        path,
-        constraints);
+    return AutoBuilder.pathfindThenFollowPath(path, constraints);
   }
 
   /**
