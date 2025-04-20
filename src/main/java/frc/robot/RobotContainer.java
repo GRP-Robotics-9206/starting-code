@@ -90,8 +90,7 @@ public class RobotContainer
 
      driverController.b().whileTrue(
          drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                              );
+              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
 
     }
     if (DriverStation.isTest())
