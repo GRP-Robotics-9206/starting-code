@@ -17,6 +17,7 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.FileVersionException;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -38,6 +39,7 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -70,9 +72,6 @@ public class SwerveSubsystem extends SubsystemBase
    * PhotonVision class to keep an accurate odometry.
    */
   private       Vision      vision;
-
-  //pathfinding
-  private PathConstraints constraints;
   
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
@@ -272,7 +271,7 @@ public class SwerveSubsystem extends SubsystemBase
     public Command driveToPose(Pose2d pose)
     {
   // Create the constraints to use while pathfinding
-      constraints = new PathConstraints(
+      PathConstraints constraints = new PathConstraints(
         swerveDrive.getMaximumChassisVelocity(), 4.0,
         swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
 
@@ -284,9 +283,35 @@ public class SwerveSubsystem extends SubsystemBase
                                      );
   }
 
-  public PathPlannerPath getLastPath()
-  {
-    return Pathfinding.getCurrentPath(constraints, new GoalEndState(edu.wpi.first.units.Units.MetersPerSecond.of(0), Rotation2d.fromDegrees(0)));
+  public Command followPath(String pathName) {
+    // Create the constraints to use while pathfinding
+    PathConstraints constraints = new PathConstraints(
+      swerveDrive.getMaximumChassisVelocity(), 4.0,
+      swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+    //load path from name
+    PathPlannerPath path;
+    try{
+      path = PathPlannerPath.fromPathFile(pathName);
+    }
+    catch (ParseException e)
+    {
+      DriverStation.reportError("Path not found: " + e.getMessage(), false);
+      return Commands.none();
+    }
+    catch (FileVersionException e)
+    {
+      DriverStation.reportError("Path version mismatch: " + e.getMessage(), false);
+      return Commands.none();
+    }
+    catch (IOException e)
+    {
+      DriverStation.reportError("Path not found: " + e.getMessage(), false);
+      return Commands.none();
+    }
+    // Since AutoBuilder is configured, we can use it to build pathfollowing commands
+    return AutoBuilder.pathfindThenFollowPath(
+        path,
+        constraints);
   }
 
   /**

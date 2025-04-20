@@ -16,6 +16,8 @@ import org.json.simple.parser.ParseException;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.PathPlannerLogging;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.net.WebServer;
@@ -209,25 +211,23 @@ public class Robot extends TimedRobot {
   }
 
   private void displayCurrentPath() {
-    List<Pose2d> poses = new ArrayList<>();
-    PathPlannerPath path = m_robotContainer.drivebase.getLastPath();
-    if (ally.isPresent()) {
-      if (ally.get() == Alliance.Red) {
-        poses.addAll(path.getAllPathPoints().stream()
-        .map(point -> new Pose2d(Constants.Pose.feildFlip - point.position.getX(),Constants.Pose.feildFlipy - point.position.getY(), new Rotation2d()))
-        .collect(Collectors.toList()));
+    PathPlannerLogging.setLogActivePathCallback((poses) -> {
+      /*
+      if (ally.isPresent()) {
+        
+        if (ally.get() == Alliance.Red) {
+          poses.map(point -> new Pose2d(Constants.Pose.feildFlip - point.position.getX(),Constants.Pose.feildFlipy - point.position.getY(), new Rotation2d())
+        );
+        }
+        if (ally.get() == Alliance.Blue) {
+          poses.map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()));
+        }
       }
-      if (ally.get() == Alliance.Blue) {
-        poses.addAll(path.getAllPathPoints().stream()
-        .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-        .collect(Collectors.toList()));
+      else {
+        poses.map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()));
       }
-    }
-    else {
-      poses.addAll(path.getAllPathPoints().stream()
-      .map(point -> new Pose2d(point.position.getX(), point.position.getY(), new Rotation2d()))
-      .collect(Collectors.toList()));
-    }
-    m_field.getObject("path").setPoses(poses);
+      */
+      m_field.getObject("path").setPoses(poses);
+  });
   }
 }

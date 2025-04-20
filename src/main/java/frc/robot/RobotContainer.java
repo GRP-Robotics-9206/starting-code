@@ -91,6 +91,7 @@ public class RobotContainer
      driverController.b().whileTrue(
          drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+      driverController.a().whileTrue(drivebase.followPath("To K"));
 
     }
     if (DriverStation.isTest())
