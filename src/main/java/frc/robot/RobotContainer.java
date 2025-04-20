@@ -4,30 +4,19 @@
 
 package frc.robot;
 
-import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.RollerSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
-import frc.robot.commands.AlgaeInCommand;
-import frc.robot.commands.AlgaeOutCommand;
-import frc.robot.commands.ArmDownCommand;
-import frc.robot.commands.ArmUpCommand;
-import frc.robot.commands.CoralOutCommand;
-import frc.robot.commands.CoralStackCommand;
-
 import com.reduxrobotics.canand.CanandEventLoop;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
+//import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
@@ -43,16 +32,14 @@ public class RobotContainer {
   public final SwerveSubsystem drivebase = new SwerveSubsystem();
 
   // other subsystems
-  public final ArmSubsystem m_arm = new ArmSubsystem();
-  public final RollerSubsystem m_roller = new RollerSubsystem();
+  //public final subsytem m_subsystem = new Subsystem();
 
   // auto chooser
   private final SendableChooser<Command> autoChooser; 
 
   // create an object for our driver controller
-  // private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
   private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
-  private final CommandXboxController operatorController = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
+  //private final CommandXboxController operatorController = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
 
   //private final SendableChooser<Command> autoChooser;
   // Build an auto chooser. This will use Commands.none() as the default option.
@@ -71,8 +58,7 @@ public class RobotContainer {
     drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
 
     // named commands for pathplanner
-    NamedCommands.registerCommand("CoralOut", new CoralOutCommand(m_roller).withTimeout(0.4));
-    NamedCommands.registerCommand("CoralStack", new CoralStackCommand(m_roller).withTimeout(1) );
+    //NamedCommands.registerCommand("Name", new Command(m_subsytem).withTimeout(number));
 
     // Setup pathplaner auto chooser
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -106,30 +92,7 @@ public class RobotContainer {
   // define what buttons do on the controller
   private void configureBindings() {
     // swerve drive zero gyro
-    // driverController.button(1).onTrue(drivebase.zeroGyro()); //zero the gyro when square(?) is pressed
     driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-
-    // algie arm controls
-    operatorController.leftBumper().whileTrue(new ArmUpCommand(m_arm));
-    operatorController.leftTrigger(.6).whileTrue(new ArmDownCommand(m_arm));
-
-    // algie in/out controls
-    operatorController.rightBumper().whileTrue(new AlgaeInCommand(m_roller));
-    operatorController.rightTrigger(.6).whileTrue(new AlgaeOutCommand(m_roller));
-
-    // auto algie
-    operatorController.a().whileTrue(new ArmDownCommand(m_arm).until(m_arm::isArmUp).andThen(new AlgaeInCommand(m_roller)));
-    operatorController.a().whileFalse(new ParallelCommandGroup(new ArmUpCommand(m_arm), new AlgaeInCommand(m_roller)).until(m_arm::isArmAtBall));
-    operatorController.b().onTrue(new AlgaeOutCommand(m_roller).withTimeout(0.3).andThen(new ArmUpCommand(m_arm).until(m_arm::isArmUp)));
-
-    // zero the arm encoder
-    driverController.x().onTrue((Commands.runOnce(m_arm::zeroEncoder)));
-
-    // coral cotrols
-    // If the secondary controller has x pressed the coral will be ejected with a slow rotation
-    // If the secondary controller has y pressed the coral will be ejected with a fast rotation
-    operatorController.x().whileTrue(new CoralOutCommand(m_roller));
-    operatorController.y().whileTrue(new CoralStackCommand(m_roller));
   }
 
   public Command getPathPlannerAuto() {
