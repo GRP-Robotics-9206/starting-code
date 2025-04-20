@@ -31,10 +31,9 @@ public class RobotContainer
 {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final         CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
+  final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
   // The robot's subsystems and commands are defined here...
-  public final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
-                                                                                "swerve"));
+  public final SwerveSubsystem drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve"));
 
   // other subsystems
   // public final ArmSubsystem m_arm = new ArmSubsystem();
@@ -45,26 +44,20 @@ public class RobotContainer
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
-  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverController.getLeftY() * -1,
-                                                                () -> driverController.getLeftX() * -1)
-                                                            .withControllerRotationAxis(driverController::getRightX)
-                                                            .deadband(OperatorConstants.DEADBAND)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
+  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(), () -> driverController.getLeftY() * -1,() -> driverController.getLeftX() * -1)
+    .withControllerRotationAxis(driverController::getRightX)
+    .deadband(OperatorConstants.DEADBAND)
+    .scaleTranslation(0.8)
+    .allianceRelativeControl(true);
 
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
-  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverController::getRightX,
-                                                                                             driverController::getRightY)
-                                                           .headingWhile(true);
-
+  SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverController::getRightX, driverController::getRightY).headingWhile(true);
   /**
    * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
    */
-  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
-                                                             .allianceRelativeControl(false);
+  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
 
  
   /**
@@ -93,23 +86,16 @@ public class RobotContainer
   private void configureBindings()
   {
     Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-   
+    drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-
-    if (Robot.isSimulation())
-    {
+    if (Robot.isSimulation()){
       driverController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
       driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
-
-     driverController.b().whileTrue(
-         drivebase.driveToPose(
-              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+      driverController.b().whileTrue(drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverController.a().whileTrue(drivebase.followPath("To K"));
-
     }
-    if (DriverStation.isTest())
-    {
+    if (DriverStation.isTest()){
+      //swap to robot relivive driving here if you want
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
 
       driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
@@ -118,8 +104,7 @@ public class RobotContainer
       driverController.back().whileTrue(drivebase.centerModulesCommand());
       driverController.leftBumper().onTrue(Commands.none());
       driverController.rightBumper().onTrue(Commands.none());
-    } else
-    {
+    } else {
       driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverController.start().whileTrue(Commands.none());
@@ -127,7 +112,6 @@ public class RobotContainer
       driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverController.rightBumper().onTrue(Commands.none());
     }
-
   }
 
   /**
@@ -135,16 +119,15 @@ public class RobotContainer
    *
    * @return the command to run in autonomous
    */
-  public Command getPathPlannerAuto() {
+  public Command getPathPlannerAuto(){
     return autoChooser.getSelected();
   }
 
-  public Command getAutonomousCommand() {
+  public Command getAutonomousCommand(){
     return autoChooser.getSelected();
   }
 
-  public void setMotorBrake(boolean brake)
-  {
+  public void setMotorBrake(boolean brake){
     drivebase.setMotorBrake(brake);
   }
 }
