@@ -4,102 +4,131 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.SwerveSubsystem;
-import swervelib.SwerveInputStream;
-import com.reduxrobotics.canand.CanandEventLoop;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-//import com.pathplanner.lib.auto.NamedCommands;
-
+import com.pathplanner.lib.auto.NamedCommands;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.SwerveSubsystem;
+import java.io.File;
+import swervelib.SwerveInputStream;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
+ * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
+ * Instead, the structure of the robot (including subsystems, commands, and trigger mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotContainer
+{
+
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  final         CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
   // The robot's subsystems and commands are defined here...
+  public final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
+                                                                                "swerve"));
 
-  // create a new swerve subsystem object
-  public final SwerveSubsystem drivebase = new SwerveSubsystem();
-
-  // other subsystems
-  //public final subsytem m_subsystem = new Subsystem();
-
-  // auto chooser
-  private final SendableChooser<Command> autoChooser; 
-
-  // create an object for our driver controller
-  private final CommandXboxController driverController = new CommandXboxController(Constants.OperatorConstants.kDriverControllerPort);
-  //private final CommandXboxController operatorController = new CommandXboxController(Constants.OperatorConstants.kOperatorControllerPort);
-
-  //private final SendableChooser<Command> autoChooser;
-  // Build an auto chooser. This will use Commands.none() as the default option.
-
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
-
-    CanandEventLoop.getInstance();
-    // Configure the trigger bindings
-    configureBindings();
-
-    // Shut up
-    DriverStation.silenceJoystickConnectionWarning(true);
-
-    // set the default command for the drivebase to the drive command
-    drivebase.setDefaultCommand(driveFieldOrientedAngularVelocity);
-
-    // named commands for pathplanner
-    //NamedCommands.registerCommand("Name", new Command(m_subsytem).withTimeout(number));
-
-    // Setup pathplaner auto chooser
-    autoChooser = AutoBuilder.buildAutoChooser();
-
-    SmartDashboard.putData("Auto Chooser", autoChooser);
-  }
-
-  // left stick controls the translation of the robot
-  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(), 
+  /**
+   * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
+   */
+  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driverController.getLeftY() * -1,
                                                                 () -> driverController.getLeftX() * -1)
-                                                                .withControllerRotationAxis(driverController::getRightX)
-                                                                .deadband(OperatorConstants.DEADBAND)
-                                                                .scaleTranslation(OperatorConstants.TRANSLATION_SCALE)
-                                                                .scaleRotation(-OperatorConstants.ROTATION_SCALE)
-                                                                .allianceRelativeControl(true);
+                                                            .withControllerRotationAxis(driverController::getRightX)
+                                                            .deadband(OperatorConstants.DEADBAND)
+                                                            .scaleTranslation(0.8)
+                                                            .allianceRelativeControl(true);
 
-  // For the right stick to correspond to the angle we want the robot to face instead of the speed of rotationa
+  /**
+   * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
+   */
   SwerveInputStream driveDirectAngle = driveAngularVelocity.copy().withControllerHeadingAxis(driverController::getRightX,
                                                                                              driverController::getRightY)
-                                                                                             .headingWhile(true);
-  
+                                                           .headingWhile(true);
 
-  // create a new command that calls the driveCommand that we made in the swerveSubsystem
-  Command driveFieldOrientedAngularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+  /**
+   * Clone's the angular velocity input stream and converts it to a robotRelative input stream.
+   */
+  SwerveInputStream driveRobotOriented = driveAngularVelocity.copy().robotRelative(true)
+                                                             .allianceRelativeControl(false);
 
-  // Same thing but for direct angle rather than angular velocity
-  Command driveFieldOrientedDirectAngle     = drivebase.driveFieldOriented(driveDirectAngle);
-  
-
-  // define what buttons do on the controller
-  private void configureBindings() {
-    // swerve drive zero gyro
-    driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+ 
+  /**
+   * The container for the robot. Contains subsystems, OI devices, and commands.
+   */
+  public RobotContainer()
+  {
+    // Configure the trigger bindings
+    configureBindings();
+    DriverStation.silenceJoystickConnectionWarning(true);
+    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
   }
 
-  public Command getPathPlannerAuto() {
-    return autoChooser.getSelected();
+  /**
+   * Use this method to define your trigger->command mappings. Triggers can be created via the
+   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary predicate, or via the
+   * named factories in {@link edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for
+   * {@link CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller PS4}
+   * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
+   */
+  private void configureBindings()
+  {
+    Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
+   
+
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+    if (Robot.isSimulation())
+    {
+      driverController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+      driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
+
+     driverController.b().whileTrue(
+         drivebase.driveToPose(
+              new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
+                              );
+
+    }
+    if (DriverStation.isTest())
+    {
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
+
+      driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      driverController.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+      driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      driverController.back().whileTrue(drivebase.centerModulesCommand());
+      driverController.leftBumper().onTrue(Commands.none());
+      driverController.rightBumper().onTrue(Commands.none());
+    } else
+    {
+      driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+      driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      driverController.start().whileTrue(Commands.none());
+      driverController.back().whileTrue(Commands.none());
+      driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      driverController.rightBumper().onTrue(Commands.none());
+    }
+
   }
 
-  public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand()
+  {
+    // An example command will be run in autonomous
+    return drivebase.getAutonomousCommand("New Auto");
+  }
+
+  public void setMotorBrake(boolean brake)
+  {
+    drivebase.setMotorBrake(brake);
   }
 }
