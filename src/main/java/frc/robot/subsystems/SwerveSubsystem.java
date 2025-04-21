@@ -29,6 +29,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -38,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 
 import frc.robot.Constants;
 import frc.robot.subsystems.Vision.Cameras;
+import frc.robot.util.AllianceFlipUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -167,8 +169,7 @@ public class SwerveSubsystem extends SubsystemBase
             // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
             var alliance = DriverStation.getAlliance();
-            if (alliance.isPresent())
-            {
+            if (alliance.isPresent()){
               return alliance.get() == DriverStation.Alliance.Red;
             }
             return false;
@@ -233,6 +234,10 @@ public class SwerveSubsystem extends SubsystemBase
         constraints,
         edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
     );
+  }
+
+  public Command driveToPoseAllianceRelative(Pose2d pose){
+    return Commands.either(driveToPose(AllianceFlipUtil.flip(pose)), driveToPose(pose), () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red);
   }
 
   public Command followPath(String pathName) {

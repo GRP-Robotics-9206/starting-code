@@ -93,24 +93,9 @@ public class RobotContainer
       driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
       driverController.b().whileTrue(drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
       driverController.a().whileTrue(drivebase.followPath("To K"));
-    }
-    if (DriverStation.isTest()){
-      //swap to robot relivive driving here if you want
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
-
-      driverController.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverController.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      driverController.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverController.back().whileTrue(drivebase.centerModulesCommand());
-      driverController.leftBumper().onTrue(Commands.none());
-      driverController.rightBumper().onTrue(Commands.none());
     } else {
       driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverController.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverController.start().whileTrue(Commands.none());
-      driverController.back().whileTrue(Commands.none());
       driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverController.rightBumper().onTrue(Commands.none());
     }
   }
 
