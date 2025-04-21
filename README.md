@@ -1,4 +1,4 @@
 > [!NOTE]
-> The 2025 Reefscape season is still active so code is subject to change.
+> This is the starter/base code for all our future robots.
 
-The current robotics season presented by **FIRST** is reefscape. (https://www.firstinspires.org/robotics/frc/game-and-season)
+This code will work no matter what season it is. Just make sure your offsets and PID tuning are put in correctly and always double check.
