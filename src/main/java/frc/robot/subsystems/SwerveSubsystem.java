@@ -66,9 +66,6 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase
 {
   private final SwerveDrive swerveDrive;
-
-  // Enable vision odometry updates while driving.
-  private final boolean visionDriveTest = true;
   
   // PhotonVision class to keep an accurate odometry.
   private Vision vision;
@@ -91,11 +88,10 @@ public class SwerveSubsystem extends SubsystemBase
     swerveDrive.setAngularVelocityCompensation(true, true,0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(false, 1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
     // swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-    if (visionDriveTest) {
-      setupPhotonVision();
-      // Stop the odometry thread if we are using vision that way we can synchronize updates better.
-      swerveDrive.stopOdometryThread();
-    }
+    
+    setupPhotonVision();
+    // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+    swerveDrive.stopOdometryThread();
   
     setupPathPlanner();
     RobotModeTriggers.autonomous().onTrue(Commands.runOnce(this::zeroGyroWithAlliance));
@@ -119,11 +115,9 @@ public class SwerveSubsystem extends SubsystemBase
   
   @Override
   public void periodic(){
-    // When vision is enabled we must manually update odometry in SwerveDrive
-    if (visionDriveTest) {
-      swerveDrive.updateOdometry();
-      vision.updatePoseEstimation(swerveDrive);
-    }
+    // manually update odometry in SwerveDrive
+    swerveDrive.updateOdometry();
+    vision.updatePoseEstimation(swerveDrive);
   }
   
   @Override
@@ -616,13 +610,6 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public Rotation2d getPitch(){
     return swerveDrive.getPitch();
-  }
-
-  /**
-   * Add a fake vision reading for testing purposes.
-   */
-  public void addFakeVisionReading(){
-    swerveDrive.addVisionMeasurement(new Pose2d(3, 3, Rotation2d.fromDegrees(65)), Timer.getFPGATimestamp());
   }
 
   /**

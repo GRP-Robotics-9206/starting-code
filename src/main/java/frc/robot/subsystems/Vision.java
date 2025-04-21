@@ -215,7 +215,7 @@ public class Vision {
    * Open up the photon vision camera streams on the localhost, assumes running photon vision on localhost.
    */
   private void openSimCameraViews(){
-    if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
+    /*if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)){
       try{
         Desktop.getDesktop().browse(new URI("http://localhost:1182/"));
         Desktop.getDesktop().browse(new URI("http://localhost:1184/"));
@@ -223,7 +223,7 @@ public class Vision {
       } catch (IOException | URISyntaxException e){
         e.printStackTrace();
       }
-    }
+    }*/
   }
 
   /**
