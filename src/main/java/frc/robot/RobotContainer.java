@@ -92,7 +92,6 @@ public class RobotContainer
       driverController.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
       driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
       driverController.b().whileTrue(drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-      driverController.a().whileTrue(drivebase.followPath("To K"));
     } else {
       driverController.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverController.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());

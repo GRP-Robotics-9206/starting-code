@@ -230,9 +230,44 @@ public class SwerveSubsystem extends SubsystemBase
     );
   }
 
+  /**
+   * Use PathPlanner Path finding to go to a point on the field relative to the current alliance.
+   *
+   * @param pose Target {@link Pose2d} to go to.
+   * @return PathFinding command
+   */
+
   public Command driveToPoseAllianceRelative(Pose2d pose){
     return Commands.either(driveToPose(AllianceFlipUtil.flip(pose)), driveToPose(pose), () -> DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red);
   }
+
+  /**
+   * Check if the robot is at a specific pose.
+   *
+   * @param pose Target {@link Pose2d} to check.
+   * @param AllianceRelative Whether the pose is relative to the alliance.
+   * @return True if the robot is at the target pose, false otherwise.
+   */
+
+  public boolean isRobotAtPose(Pose2d pose, boolean AllianceRelative){
+    Pose2d finalPose = pose;
+    if (AllianceRelative){
+      finalPose = AllianceFlipUtil.flip(pose);
+    }
+
+    if(this.getPose().getTranslation().getDistance(finalPose.getTranslation()) < 0.1) {
+      return true;
+    } 
+
+    return false;
+  }
+
+  /**
+   * Use PathPlanner Path finding to go to and follow a path.
+   *
+   * @param pathName Target {@link String} to go to.
+   * @return PathFinding command
+   */
 
   public Command followPath(String pathName) {
     // Create the constraints to use while pathfinding
